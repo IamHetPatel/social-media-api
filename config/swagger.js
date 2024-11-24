@@ -1,8 +1,6 @@
 const swaggerJsDoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
 
-const SERVER_URI = process.env.SERVER_URI || `http://localhost:8080`;
-
 const swaggerOptions = {
     swaggerDefinition: {
         openapi: '3.0.0',
@@ -17,7 +15,7 @@ const swaggerOptions = {
         },
         servers: [
             {
-                url: `${SERVER_URI}/api`,
+                url: `https://social-media-api-cbqe.onrender.com/api`,
                 description: 'Render cloud server'
             }
         ],
