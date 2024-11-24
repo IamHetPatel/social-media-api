@@ -15,6 +15,10 @@
 <body>
     <h1>Chat and Notifications</h1>
 
+    <!-- User List Section -->
+    <h2>Available Users</h2>
+    <div id="usersDiv"></div>
+
     <!-- Notifications Section -->
     <h2>Notifications</h2>
     <div id="notifications"></div>
@@ -30,7 +34,7 @@
     <button id="sendBtn">Send</button>
 
     <script>
-        const socket = io('https://social-media-api-cbqe.onrender.com');
+        const socket = io('http://localhost:8080');
 
         const userIdInput = document.getElementById('userIdInput');
         const notificationsDiv = document.getElementById('notifications');
@@ -41,6 +45,20 @@
         // Simulate the current user's ID (in a real app, this would come from login)
         const currentUserId = prompt('Enter your User ID to join the chat:');
         socket.emit('join', currentUserId);
+
+        // Fetch and display all users
+        fetch('http://localhost:8080/api/users') // Update to deployed API URL
+            .then((response) => response.json())
+            .then((users) => {
+                users.forEach((user) => {
+                    const userElem = document.createElement('div');
+                    userElem.textContent = `Name: ${user.name}, ID: ${user._id}`;
+                    usersDiv.appendChild(userElem);
+                });
+            })
+            .catch((err) => {
+                console.error('Failed to fetch users:', err);
+            });
 
         // Listen for incoming private messages
         socket.on('receiveMessage', ({ senderId, message }) => {

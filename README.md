@@ -69,6 +69,11 @@ POST /api/auth/login
 }
 ```
 
+#### Get all Users
+```http
+GET /api/users
+```
+
 ### Post Endpoints
 
 #### Create Post
@@ -168,7 +173,7 @@ Authorization: Bearer <token>
 #### Chat Testing
 1. **Setup Multiple Browser Tabs:**
    - Open `/chat.html` in two separate browser tabs
-   - Log in with different user IDs in each tab
+   - Log in with different user IDs in each tab (You can get the user IDs using the /api/users endpoint)
 
 2. **Test Private Messaging:**
    - In Tab 1, send a private message to the user ID in Tab 2
@@ -214,7 +219,7 @@ cp .env.example .env
 ```
 Edit `.env` with your credentials:
 ```env
-PORT=5000
+SERVER_URI=http://localhost:8080
 MONGO_URI=your_mongodb_uri
 JWT_SECRET=your_jwt_secret
 ```
