@@ -10,7 +10,7 @@ const commentRoutes = require('./routes/commentRoutes');
 const chatRoutes = require('./routes/chatRoutes');
 const { errorHandler } = require('./utils/errorHandler');
 const { swaggerUi, swaggerDocs } = require('./config/swagger');
-
+const path = require('path');
 
 dotenv.config();
 connectDB();
@@ -35,6 +35,8 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 // Error handling middleware
 app.use(errorHandler);
+
+app.use(express.static(path.join(__dirname, 'public')));
 
 const PORT = process.env.PORT || 8080;
 server.listen(PORT, () => {

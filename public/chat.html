@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Private Chat</title>
+    <script src="https://cdn.socket.io/4.6.0/socket.io.min.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        #messages { border: 1px solid #ccc; padding: 10px; height: 300px; overflow-y: scroll; }
+        #userIdInput, #messageInput { width: 80%; padding: 10px; margin-bottom: 10px; }
+        #sendBtn { padding: 10px; }
+    </style>
+</head>
+<body>
+    <h1>Private Chat</h1>
+    <div>
+        <label for="userIdInput">Send Message To (User ID):</label>
+        <input id="userIdInput" type="text" placeholder="Enter Receiver User ID" />
+    </div>
+    <div id="messages"></div>
+    <input id="messageInput" type="text" placeholder="Type your message" />
+    <button id="sendBtn">Send</button>
+
+    <script>
+        const socket = io('http://localhost:8080'); // Update URL if deployed
+
+        const userIdInput = document.getElementById('userIdInput');
+        const messagesDiv = document.getElementById('messages');
+        const messageInput = document.getElementById('messageInput');
+        const sendBtn = document.getElementById('sendBtn');
+
+        // Simulate the current user's ID (in a real app, this would come from login)
+        const currentUserId = prompt('Enter your User ID to join the chat:');
+        socket.emit('join', currentUserId);
+
+        // Listen for incoming messages
+        socket.on('receiveMessage', ({ senderId, message }) => {
+            const messageElem = document.createElement('div');
+            messageElem.textContent = `User ${senderId}: ${message}`;
+            messagesDiv.appendChild(messageElem);
+        });
+
+        // Send a private message
+        sendBtn.addEventListener('click', () => {
+            const receiverId = userIdInput.value;
+            const message = messageInput.value;
+            if (receiverId && message) {
+                socket.emit('privateMessage', { senderId: currentUserId, receiverId, message });
+                messageInput.value = ''; // Clear the input field
+            }
+        });
+    </script>
+</body>
+</html>

@@ -20,7 +20,10 @@
     "swagger-ui-express": "^5.0.1"
   },
   "devDependencies": {
-    "nodemon": "^3.0.1"
+    "chai": "^5.1.2",
+    "mocha": "^10.8.2",
+    "nodemon": "^3.0.1",
+    "socket.io-client": "^4.8.1"
   },
   "keywords": [],
   "author": "",
