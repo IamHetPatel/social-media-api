@@ -9,6 +9,15 @@ module.exports = (io) => {
             users[userId] = socket.id;
             console.log(`User ${userId} is connected with socket ${socket.id}`);
         });
+        
+        socket.on('newComment', ({ postOwnerId, commentDetails }) => {
+            const postOwnerSocketId = users[postOwnerId];
+            
+            // Notify the post owner if they're online
+            if (postOwnerSocketId) {
+                io.to(postOwnerSocketId).emit('commentNotification', commentDetails);
+            }
+        });
 
         // Handle private messages
         socket.on('privateMessage', async ({ senderId, receiverId, message }) => {

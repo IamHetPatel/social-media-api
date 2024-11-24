@@ -18,7 +18,7 @@ connectDB();
 const app = express();
 const server = http.createServer(app);
 const io = socketIo(server, { cors: { origin: '*' } });
-
+app.set('io', io);
 require('./sockets/chatSocket')(io);
 
 app.use(cors());

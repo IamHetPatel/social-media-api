@@ -1,5 +1,11 @@
 # 🚀 Social Media Platform API
 
+![Node.js](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)
+![Express.js](https://img.shields.io/badge/Express.js-000000?style=for-the-badge&logo=express&logoColor=white)
+![MongoDB](https://img.shields.io/badge/MongoDB-4EA94B?style=for-the-badge&logo=mongodb&logoColor=white)
+![Socket.io](https://img.shields.io/badge/Socket.io-010101?style=for-the-badge&logo=socket.io&logoColor=white)
+![JWT](https://img.shields.io/badge/JWT-000000?style=for-the-badge&logo=JSON%20web%20tokens&logoColor=white)
+
 A robust social media platform backend API built with the MERN stack, featuring real-time chat capabilities powered by Socket.IO. This API provides a comprehensive solution for user authentication, post management, commenting system, and private messaging.
 
 ## ✨ Features
@@ -31,6 +37,8 @@ A robust social media platform backend API built with the MERN stack, featuring 
 - **Authentication**: JSON Web Tokens (JWT)
 - **Real-time Communication**: Socket.IO
 - **Deployment**: Render
+
+---
 
 ## 📚 API Documentation
 
@@ -102,21 +110,83 @@ Authorization: Bearer <token>
 }
 ```
 
-### Real-Time Chat Events
+---
 
-#### Join Chat
-```javascript
-socket.emit('join', userId);
+## 🔔 Real-Time Chat and Notifications
+
+### Socket.IO Events
+
+#### 1. Join Chat
+- **Event:** `join`
+- **Description:** Registers a user with the server
+- **Data:**
+```json
+"12345"  // User ID
 ```
 
-#### Send Private Message
-```javascript
-socket.emit('privateMessage', {
-  senderId: '12345',
-  receiverId: '67890',
-  message: 'Hello!'
-});
+#### 2. Send Private Message
+- **Event:** `privateMessage`
+- **Description:** Sends a private message to a specific user
+- **Data:**
+```json
+{
+  "senderId": "12345",
+  "receiverId": "67890",
+  "message": "Hello!"
+}
 ```
+
+#### 3. Receive Private Message
+- **Event:** `receiveMessage`
+- **Description:** Receives a private message
+- **Data:**
+```json
+{
+  "senderId": "12345",
+  "message": "Hello!"
+}
+```
+
+#### 4. New Comment Notification
+- **Event:** `commentNotification`
+- **Description:** Sends a notification to the post owner when a new comment is added to their post
+- **Data:**
+```json
+{
+  "text": "Nice post!",
+  "commenter": "67890",    // User ID of the commenter
+  "postId": "abcd1234"     // Post ID
+}
+```
+
+---
+
+## 🧪 Testing Chat and Notifications
+
+---
+
+#### Chat Testing
+1. **Setup Multiple Browser Tabs:**
+   - Open `/chat.html` in two separate browser tabs
+   - Log in with different user IDs in each tab
+
+2. **Test Private Messaging:**
+   - In Tab 1, send a private message to the user ID in Tab 2
+   - Verify real-time message delivery in Tab 2
+   - Check message persistence in the database
+
+#### Notification Testing
+1. **Comment Notifications:**
+   - Use Postman/Insomnia to create a new comment via `/api/comments`
+   - Verify that the post owner receives an immediate notification
+   - Check notification content matches the comment data
+
+2. **System Health:**
+   - Monitor WebSocket connections in browser DevTools
+   - Verify proper connection/disconnection handling
+   - Test notification delivery with multiple active users
+
+---
 
 ## 🚀 Getting Started
 

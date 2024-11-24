@@ -15,6 +15,16 @@ exports.createComment = async (req, res) => {
         const comment = new Comment({ text, post: postId, user: req.user.id });
         await comment.save();
 
+        const io = req.app.get('io');
+        io.emit('newComment', {
+            postOwnerId: post.user.toString(),
+            commentDetails: {
+                text: comment.text,
+                commenter: req.user.id,
+                postId: post._id,
+            },
+        });
+
         res.status(201).json(comment);
     } catch (err) {
         res.status(400).json({ error: err.message });

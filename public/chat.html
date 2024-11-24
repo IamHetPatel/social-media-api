@@ -3,17 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Private Chat</title>
+    <title>Chat and Notifications</title>
     <script src="https://cdn.socket.io/4.6.0/socket.io.min.js"></script>
     <style>
         body { font-family: Arial, sans-serif; padding: 20px; }
-        #messages { border: 1px solid #ccc; padding: 10px; height: 300px; overflow-y: scroll; }
+        #messages, #notifications { border: 1px solid #ccc; padding: 10px; height: 300px; overflow-y: scroll; margin-bottom: 20px; }
         #userIdInput, #messageInput { width: 80%; padding: 10px; margin-bottom: 10px; }
         #sendBtn { padding: 10px; }
     </style>
 </head>
 <body>
-    <h1>Private Chat</h1>
+    <h1>Chat and Notifications</h1>
+
+    <!-- Notifications Section -->
+    <h2>Notifications</h2>
+    <div id="notifications"></div>
+
+    <!-- Private Chat Section -->
+    <h2>Private Chat</h2>
     <div>
         <label for="userIdInput">Send Message To (User ID):</label>
         <input id="userIdInput" type="text" placeholder="Enter Receiver User ID" />
@@ -23,9 +30,10 @@
     <button id="sendBtn">Send</button>
 
     <script>
-        const socket = io('https://social-media-api-cbqe.onrender.com'); // Update URL if deployed
+        const socket = io('https://social-media-api-cbqe.onrender.com');
 
         const userIdInput = document.getElementById('userIdInput');
+        const notificationsDiv = document.getElementById('notifications');
         const messagesDiv = document.getElementById('messages');
         const messageInput = document.getElementById('messageInput');
         const sendBtn = document.getElementById('sendBtn');
@@ -34,11 +42,18 @@
         const currentUserId = prompt('Enter your User ID to join the chat:');
         socket.emit('join', currentUserId);
 
-        // Listen for incoming messages
+        // Listen for incoming private messages
         socket.on('receiveMessage', ({ senderId, message }) => {
             const messageElem = document.createElement('div');
             messageElem.textContent = `User ${senderId}: ${message}`;
             messagesDiv.appendChild(messageElem);
+        });
+
+        // Listen for comment notifications
+        socket.on('commentNotification', (commentDetails) => {
+            const notificationElem = document.createElement('div');
+            notificationElem.textContent = `New comment on your post: "${commentDetails.text}" by User ${commentDetails.commenter}`;
+            notificationsDiv.appendChild(notificationElem);
         });
 
         // Send a private message
