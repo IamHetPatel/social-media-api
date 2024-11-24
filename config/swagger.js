@@ -18,7 +18,7 @@ const swaggerOptions = {
         servers: [
             {
                 url: `https://social-media-api-cbqe.onrender.com/api`,
-                description: 'Local server'
+                description: 'Render cloud server'
             }
         ],
         components: {
