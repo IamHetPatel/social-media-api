@@ -17,7 +17,7 @@ const swaggerOptions = {
         },
         servers: [
             {
-                url: `http://localhost:${PORT}/api`,
+                url: `https://social-media-api-cbqe.onrender.com/api`,
                 description: 'Local server'
             }
         ],
